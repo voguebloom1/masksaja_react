@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import AccountTemplate from './components/pages/AccountTemplate';
+import TopNaviBar from './components/layout/TopNaviBar';
+import MainTemplate from './components/pages/MainTemplate';
 
 
 class App extends Component{
@@ -7,7 +8,8 @@ class App extends Component{
   render(){
     return (
       <div className="App">
-        <AccountTemplate/>
+        <TopNaviBar/>
+        <MainTemplate/>
       </div>
     );
   }
