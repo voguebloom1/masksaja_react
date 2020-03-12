@@ -15,3 +15,12 @@ code {
 .container{
   max-width: 100%;
 }
+
+i.icon-coffee{
+  background-image: url("./static/icon/coffee-icon.png");
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}

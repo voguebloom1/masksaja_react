@@ -8,7 +8,7 @@ class TopNaviBar extends Component{
   render(){
     return (
       <div className="top-navi-bar">
-        탑 바
+        <i className="icon-coffee"/>
       </div>
     );
   }

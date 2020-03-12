@@ -1,0 +1,23 @@
+.account-template{
+    max-width: 1024px;
+    height: calc(100vh - 100px);
+    margin: auto;
+    background-color: bisque;
+    display: flex;
+}
+
+.at-group-box{
+    width: 100%;
+    height: 100px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #74d1d2;
+    background-color: #f9a462;
+}
+
+@media (min-width: 1024px){
+    .account-template{
+        border-right: 1px solid #74d1d2;
+        border-left: 1px solid #74d1d2;
+    }
+}
