@@ -1,4 +1,4 @@
-.account-template{
+.main-template{
     max-width: 1024px;
     height: calc(100vh - 100px);
     margin: auto;
@@ -6,13 +6,21 @@
     display: flex;
 }
 
-.at-group-box{
+.mt-group-box{
     width: 100%;
     height: 100px;
     margin: 10px;
     border-radius: 10px;
     border: 1px solid #74d1d2;
-    background-color: #f9a462;
+    background-color: #74d1d2;
+    display: flex;
+    cursor: pointer;
+}
+
+.mt-group-box-title{
+    margin: auto;
+    font-size: 23px;
+    font-weight: 700;
 }
 
 @media (min-width: 1024px){

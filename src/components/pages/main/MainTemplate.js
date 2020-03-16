@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 import './MainTemplate.css';
 
@@ -20,19 +22,24 @@ class MainTemplate extends Component{
       })
   }
 
+  handleClick  = (id) => {
+    this.props.history.push('/group');
+  } 
 
   render(){
-
+    console.log(this.props)
     const { groups } = this.state;
 
+
     return (
-      <div className="account-template">
+      <div className="main-template">
           {groups.map((group) => 
-            <div key={group._id} className="at-group-box">
-              <div>{group.name}</div>
+            <div key={group._id} className="mt-group-box" onClick={()=>this.handleClick(group._id)}>
+              <div className="mt-group-box-title">{group.name}</div>
             </div> 
           )}
       </div>
+      
     );
   }
 }
