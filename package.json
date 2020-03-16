@@ -2,6 +2,7 @@
   "name": "pretty-account",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://139.162.111.42:10000",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",

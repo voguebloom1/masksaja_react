@@ -3,4 +3,32 @@
     height: calc(100vh - 100px);
     margin: auto;
     background-color: bisque;
+    overflow-y: scroll;
+}
+
+.ct-daily-box{
+    margin: 10px 0px;
+    background-color: white;
+}
+
+.ct-daily-box-title{
+    text-align: center;
+    height: 40px;
+    background-color: #74d1d2;
+    color: white;
+    padding-top: 5px;
+}
+
+.ct-daily-box-table{
+    width: 100%;
+}
+
+.ct-daily-box-table th{
+    text-align: center;
+    border: 1px solid #74d1d2;
+}
+
+.ct-daily-box-table td{
+    text-align: center;
+    border: 1px solid #74d1d2;
 }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TopNaviBar from './components/layout/TopNaviBar';
 import MainTemplate from './components/pages/main/MainTemplate';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import CoffeeTemplate from './components/pages/coffee/CoffeeTemplate';
 import history from './history';
 
@@ -29,6 +29,9 @@ class App extends Component{
     return (
       <Router history={history}>
         <div className="App">
+          <div>
+            <i className="home"><Link to='/'>home</Link></i>
+          </div>
           <TopNaviBar/>
           <div>
             <Switch>
