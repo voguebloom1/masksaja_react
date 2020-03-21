@@ -1,0 +1,31 @@
+.main-template{
+    max-width: 1024px;
+    height: calc(100vh - 100px);
+    margin: auto;
+    background-color: bisque;
+    display: flex;
+    flex-direction: column;
+}
+
+.mt-group-box{
+    height: 100px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #74d1d2;
+    background-color: #74d1d2;
+    display: flex;
+    cursor: pointer;
+}
+
+.mt-group-box-title{
+    margin: auto;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+@media (min-width: 1024px){
+    .account-template{
+        border-right: 1px solid #74d1d2;
+        border-left: 1px solid #74d1d2;
+    }
+}

@@ -11,17 +11,13 @@ class App extends Component{
   state = { 
     routes : [
       {
-        path: "/",
+        path: "/*",
         exact: true,
         component: MainTemplate
-      },
-      {
-        path: "/group",
-        component: CoffeeTemplate
-      },
-    ]
+      }
+    ],
+    selectGroupId : ""
   }
-
   render(){
 
     const {routes} = this.state;

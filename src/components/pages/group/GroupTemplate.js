@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { css } from "@emotion/core";
-import { Route, Switch } from 'react-router-dom';
+import SyncLoader from "react-spinners/SyncLoader"
 
-import GroupTemplate from "../group/GroupTemplate"
-import './MainTemplate.css';
-import CoffeeTemplate from '../coffee/CoffeeTemplate';
+import './GroupTemplate.css';
 
 const override = css`
   display: block;
@@ -17,8 +15,7 @@ class MainTemplate extends Component{
 
   state = {
     groups : [],
-    loading: true,
-    selectGroupId: ""
+    loading: true
   }
 
   componentDidMount(){
@@ -31,7 +28,7 @@ class MainTemplate extends Component{
   }
 
   handleClick  = (id) => {
-    this.props.history.push('/group');
+    this.props.history.push('/group/'+id);
   } 
 
   render(){
@@ -39,12 +36,19 @@ class MainTemplate extends Component{
 
 
     return (
-      <div className="main-template">
-        <Route exact path="/" component={GroupTemplate}/>
-        <Route path="/group/:groupId" component={CoffeeTemplate}
-          selectGroupId={this.state.selectGroupId}/>
-      </div>
-      
+        <>
+          <SyncLoader
+            css={override}
+            size={15}
+            color={"#74d1d2"}
+            loading={this.state.loading}
+          />
+          {groups.map((group) => 
+            <div key={group._id} className="mt-group-box" onClick={()=>this.handleClick(group._id)}>
+              <div className="mt-group-box-title">{group.name}</div>
+            </div> 
+          )}
+       </>      
     );
   }
 }

@@ -1,64 +1,69 @@
 import React, {Component} from 'react';
 import "./CoffeeTemplate.css";
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Modal, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { css } from "@emotion/core";
+import SyncLoader from "react-spinners/SyncLoader"
+
+const override = css`
+  display: block;
+  margin: 50px auto;
+  border-color: red;
+`;
 
 class CoffeeTemplate extends Component{
 
     state = {
-        nice : ""
+        nice : "",
+        memebersMenuShow : false,
+        menuMenuShow : false,
+        group : {},
+        loading: true
     }
 
     componentDidMount(){
-        this.setState({nice: "1"});
+        const {groupId} = this.props.match.params;
+        axios.get("/svc/api/v1/groups/" + groupId)
+        .then((res)=> {
+          console.log(res);  
+          if(res.data){
+            this.setState({group: res.data, loading: false});
+          }
+        })
+    }
+
+    handleMenuClick = (menuName, show) => {
+        this.setState({[menuName]: show})
     }
 
     render(){
-
+        
+        console.log(this.props)
         const range = [];
-        for(let i=1; i<10; i++){
+        for(let i=1; i<6; i++){
             range.push(i);
         }
         return(
-            <>  
-                {/* <div className="date-box">
-                    <div>2020-03-16 ~ 2020-03-22</div>
-                </div>               */}
+            <>  <SyncLoader
+                    css={override}
+                    size={15}
+                    color={"#74d1d2"}
+                    loading={this.state.loading}
+                />  
+                { this.state.loading == false &&
                 <Container className="coffee-template">   
+                    <div className="ct-date-box">
+                        <div className="ct-date-box-left">-</div>
+                        <div className="ct-date-box-text">2020-03-16 ~ 2020-03-22</div>
+                        <div className="ct-date-box-right">-</div>
+                    </div>
+                    <div className="ct-slide-menu">
+                        <div className="ct-slide-menu-box" onClick={()=>this.handleMenuClick('memebersMenuShow', true)}>Members</div>
+                        <div className="ct-slide-menu-box"  onClick={()=>this.handleMenuClick('menuMenuShow', true)}>Menu</div>
+                        <div className="ct-slide-menu-box">Total</div>
+                        <div className="ct-slide-menu-box">Settings</div>
+                    </div>    
                     <Row>
-                        <Col xs={12} md={12} lg={12} xl={12}>
-                            <div className="ct-total-box">
-                                <table className="ct-total-box-table">
-                                    <thead>
-                                        <tr>
-                                            <th>이름</th>
-                                            <th>월</th>
-                                            <th>화</th>
-                                            <th>수</th>
-                                            <th>목</th>
-                                            <th>금</th>
-                                            <th>토</th>
-                                            <th>일</th>
-                                            <th>합계</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {range.map((i) =>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td><span className="menu">아벤</span></td>
-                                                <td>20,000</td>
-                                            </tr>
-                                        )} 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </Col>
                         { range.map((i) => 
                             <Col xs={12} md={6} lg={4} xl={3} key={i}>
                             <div className="ct-daily-box">
@@ -86,6 +91,43 @@ class CoffeeTemplate extends Component{
                         )}                   
                     </Row>
                 </Container>
+                }
+
+                <Modal show={this.state.memebersMenuShow} onHide={()=>this.handleMenuClick('memebersMenuShow', false)}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Members</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        { this.state.group.members && this.state.group.members.map((member)=><div key={member._id}>{member.name}</div>)}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={()=>this.handleMenuClick('memebersMenuShow', false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={()=>this.handleMenuClick('memebersMenuShow', false)}>
+                        Save Changes
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.menuMenuShow} onHide={()=>this.handleMenuClick('menuMenuShow', false)}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Members</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        { this.state.group.store && this.state.group.store.menu 
+                        && this.state.group.store.menu.map((m)=><div key={m._id}>{m.name}</div>)}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={()=>this.handleMenuClick('menuMenuShow', false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={()=>this.handleMenuClick('menuMenuShow', false)}>
+                        Save Changes
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </>
         )   
     }
