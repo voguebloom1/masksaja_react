@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import "./CoffeeTemplate.css";
-import { Row, Col, Container, Modal, Button } from 'react-bootstrap';
+import { Row, Col, Container, Modal, Button,Table } from 'react-bootstrap';
 import axios from 'axios';
 import { css } from "@emotion/core";
 import SyncLoader from "react-spinners/SyncLoader"
+import { v4 as uuidv4 } from 'uuid';
+import MenuModal from '../modal/MenuModal';
+import MemberModal from '../modal/MemberModal';
 
 const override = css`
   display: block;
@@ -15,13 +18,18 @@ class CoffeeTemplate extends Component{
 
     state = {
         nice : "",
-        memebersMenuShow : false,
+        membersMenuShow : false,
         menuMenuShow : false,
         group : {},
         loading: true
     }
 
     componentDidMount(){
+        this.callGroupInfo();
+    }
+
+    callGroupInfo = () => {
+        this.setState({loading:true})
         const {groupId} = this.props.match.params;
         axios.get("/svc/api/v1/groups/" + groupId)
         .then((res)=> {
@@ -34,6 +42,77 @@ class CoffeeTemplate extends Component{
 
     handleMenuClick = (menuName, show) => {
         this.setState({[menuName]: show})
+    }
+
+    // OnClickButton
+    handlOnClickButton = (type, _id) => {
+
+        if(type === 'addMemeber'){
+            console.log(type);
+            this.addMemeber();
+        }else if(type === "saveMember"){
+            this.saveMember(_id);
+        }else if(type === "deleteMember"){
+            this.deleteMember(_id);
+        }
+    }
+
+    saveMember = (id) => {
+        const { group } = this.state;
+        const member = group.members.find((member) => member._id === id);
+        if(member.create){
+            const params = {
+                name : member.name
+            }
+            axios.post("/svc/api/v1/groups/" + group._id + "/members/", params)
+            .then((res)=> {
+                this.setState({group: res.data});
+            })
+        }
+    }
+
+    addMemeber = () => {
+        const {group} = this.state;
+
+        const modifyMember = group.members.find(member=>member.modify == true);
+        if(modifyMember){
+            alert("한개씩 추가 가능합니다.")
+        }else{
+            if(group.members){
+                group.members.push({_id: uuidv4(), name : "", modify : true, create : true}); 
+                this.setState(group);
+            }else{
+                group.members = new Array();
+                group.members.push({_id: uuidv4(), name : "", modify : true, create : true}); 
+                this.setState(group);
+            }
+        }
+
+    }
+
+    deleteMember = (id) => {
+        const { group } = this.state;
+        axios.delete("/svc/api/v1/groups/" + group._id + "/members/" + id)
+            .then((res)=>{
+                this.setState({group: res.data});
+            })
+    }
+
+    // OnChange
+    handleInputOnChange = (e, type, id) => {
+
+        if(type === 'memberName'){
+            const text = e.target.value;
+            const {group} = this.state;
+            const members = group.members.map(member => {
+                if(member._id === id){
+                    member.name = text;
+                }
+                return member;
+            })
+            group.members = members;
+            this.setState({group});
+        }
     }
 
     render(){
@@ -58,7 +137,7 @@ class CoffeeTemplate extends Component{
                         <div className="ct-date-box-right">-</div>
                     </div>
                     <div className="ct-slide-menu">
-                        <div className="ct-slide-menu-box" onClick={()=>this.handleMenuClick('memebersMenuShow', true)}>Members</div>
+                        <div className="ct-slide-menu-box" onClick={()=>this.handleMenuClick('membersMenuShow', true)}>Members</div>
                         <div className="ct-slide-menu-box"  onClick={()=>this.handleMenuClick('menuMenuShow', true)}>Menu</div>
                         <div className="ct-slide-menu-box">Total</div>
                         <div className="ct-slide-menu-box">Settings</div>
@@ -93,40 +172,22 @@ class CoffeeTemplate extends Component{
                 </Container>
                 }
 
-                <Modal show={this.state.memebersMenuShow} onHide={()=>this.handleMenuClick('memebersMenuShow', false)}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>Members</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        { this.state.group.members && this.state.group.members.map((member)=><div key={member._id}>{member.name}</div>)}
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>this.handleMenuClick('memebersMenuShow', false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={()=>this.handleMenuClick('memebersMenuShow', false)}>
-                        Save Changes
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
 
-                <Modal show={this.state.menuMenuShow} onHide={()=>this.handleMenuClick('menuMenuShow', false)}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>Members</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        { this.state.group.store && this.state.group.store.menu 
-                        && this.state.group.store.menu.map((m)=><div key={m._id}>{m.name}</div>)}
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>this.handleMenuClick('menuMenuShow', false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={()=>this.handleMenuClick('menuMenuShow', false)}>
-                        Save Changes
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
+                <MemberModal
+                    handleMenuClick={this.handleMenuClick}
+                    handlOnClickButton={this.handlOnClickButton}
+                    handleInputOnChange={this.handleInputOnChange}
+                    group={this.state.group}
+                    membersMenuShow={this.state.membersMenuShow}
+
+                />
+                <MenuModal
+                    handleMenuClick={this.handleMenuClick}
+                    handlOnClickButton={this.handlOnClickButton}
+                    handleInputOnChange={this.handleInputOnChange}
+                    group={this.state.group}
+                    menuMenuShow={this.state.menuMenuShow}
+                />
 
             </>
         )   

@@ -4,7 +4,7 @@ import MainTemplate from './components/pages/main/MainTemplate';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import CoffeeTemplate from './components/pages/coffee/CoffeeTemplate';
 import history from './history';
-
+import { MdHome } from "react-icons/md";
 
 class App extends Component{
 
@@ -26,7 +26,7 @@ class App extends Component{
       <Router history={history}>
         <div className="App">
           <div className="navi-bar">
-            <i className="home"><Link to='/'>home</Link></i>
+            <i className="home"><Link to='/'><MdHome/></Link></i>
           </div>
           <TopNaviBar/>
           <div>

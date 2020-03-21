@@ -25,6 +25,21 @@ i.icon-coffee{
   background-repeat: no-repeat;
 }
 
+i.home{
+  font-size: 20px;
+  padding-left: 5px;
+}
+
 .navi-bar{
   width: 20px;
+}
+
+.md-control-point{
+  text-align: center;
+  color: #007bff;
+  font-size: 30px;
+}
+
+.md-control-point svg{
+  cursor: pointer;
 }
