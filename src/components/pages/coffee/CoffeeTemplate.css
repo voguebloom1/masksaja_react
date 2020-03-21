@@ -1,9 +1,9 @@
 .coffee-template{
     max-width: 1024px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 125px);
     margin: auto;
     background-color: bisque;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .ct-daily-box{
@@ -32,3 +32,28 @@
     text-align: center;
     border: 1px solid #74d1d2;
 }
+
+.ct-total-box{
+    background-color: white;
+    margin-top: 10px;
+}
+
+.ct-total-box-table{
+    width: 100%;
+}
+
+.ct-total-box-table th{
+    text-align: center;
+    background-color: #74d1d2;
+    color: white;
+    border: 1px solid #74d1d2;
+}
+
+.ct-total-box-table td{
+    text-align: center;
+    border: 1px solid #74d1d2;
+}
+
+@media (max-width: 720px){
+}
+

@@ -29,7 +29,7 @@ class App extends Component{
     return (
       <Router history={history}>
         <div className="App">
-          <div>
+          <div className="navi-bar">
             <i className="home"><Link to='/'>home</Link></i>
           </div>
           <TopNaviBar/>
